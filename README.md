@@ -1,8 +1,8 @@
-A simple form to send information to email
+A simple form to send information to email. 
 Check out the demo [here](http://simple-form-email.qhaixan.com/)
 
-## Setup
-# Prerequisite
+# Setup
+## Prerequisite
 - PHP 8.1.7
 - [Composer](https://getcomposer.org/)
 - [Node.js](https://nodejs.org/en/)
