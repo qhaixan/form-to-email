@@ -1,5 +1,5 @@
 A simple form to send information to email. 
-Check out the demo [here](http://simple-form-email.qhaixan.com/)
+Check out the demo [here](https://simple-form-email.qhaixan.com/)
 
 # Setup
 ## Prerequisite
