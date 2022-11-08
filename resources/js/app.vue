@@ -4,24 +4,28 @@
             <v-card-title class="mx-auto">Simple Form</v-card-title>
             <v-row>
                 <v-col cols="12" md="6">
-                    <v-text-field class="rounded-md" variant="outlined" v-model="firstname" label="First name" required>
+                    <v-text-field class="rounded-md" variant="outlined" @blur="handleBlur('firstname')" ref="firstname"
+                        :rules="reqRules" v-model="firstname" label="First name">
                     </v-text-field>
                 </v-col>
 
                 <v-col cols="12" md="6">
-                    <v-text-field class="rounded-md" variant="outlined" v-model="lastname" label="Last name" required>
+                    <v-text-field class="rounded-md" variant="outlined" @blur="handleBlur('lastname')" ref="lastname"
+                        :rules="reqRules" v-model="lastname" label="Last name">
                     </v-text-field>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col cols="12" md="12">
-                    <v-textarea class="rounded-md" variant="outlined" v-model="description" label="Small Description">
+                    <v-textarea class="rounded-md" variant="outlined" @blur="handleBlur('description')"
+                        ref="description" :rules="reqRules" v-model="description" label="Small Description">
                     </v-textarea>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col cols="12" md="12">
-                    <v-text-field class="rounded-md" variant="outlined" v-model="email" label="Email Address" required>
+                    <v-text-field class="rounded-md" variant="outlined" @blur="handleBlur('email')" ref="email"
+                        :rules="emailRules" v-model="email" label="Email Address" required>
                     </v-text-field>
                 </v-col>
             </v-row>
@@ -53,7 +57,9 @@
             </v-row>
             <v-card v-else-if="status == 'success'" class="info">
                 <v-toolbar dark color="info">
-                    <v-toolbar-title><v-icon icon="mdi-email-fast-outline"></v-icon> Email Sent</v-toolbar-title>
+                    <v-toolbar-title>
+                        <v-icon icon="mdi-email-fast-outline"></v-icon> Email Sent
+                    </v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-btn icon dark @click="overlay = false">
                         <v-icon>mdi-close</v-icon>
@@ -65,7 +71,9 @@
             </v-card>
             <v-card v-else-if="status == 'failed'">
                 <v-toolbar dark color="error">
-                    <v-toolbar-title><v-icon icon="mdi-alert-octagon"></v-icon> Error</v-toolbar-title>
+                    <v-toolbar-title>
+                        <v-icon icon="mdi-alert-octagon"></v-icon> Error
+                    </v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-btn icon dark @click="overlay = false">
                         <v-icon>mdi-close</v-icon>
@@ -89,21 +97,22 @@ export default {
         lastname: '',
         description: '',
         email: '',
-        images: []
+        images: [],
+        reqRules: [
+            v => !!v || 'Field is required'
+        ],
+        emailRules: [
+            v => !!v || 'Field is required',
+            v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+        ],
     }),
     methods: {
-        checkFormValid() {
-            if (!this.firstname) {
-                this.valid = false;
-            } else if (!this.lastname) {
-                this.valid = false;
-            } else if (!this.description) {
-                this.valid = false;
-            } else if (!/.+@.+\..+/.test(this.email)) {
-                this.valid = false;
-            } else {
-                this.valid = true;
-            }
+        handleBlur(field) {
+            this.$refs[field].validate();
+        },
+        async checkFormValid() {
+            const { valid } = await this.$refs.form.validate();
+            this.valid = valid;
         },
         handleFileImport() {
             this.$refs.uploader.click();
@@ -143,16 +152,16 @@ export default {
         }
     },
     watch: {
-        firstname() {
+        firstname(e) {
             this.checkFormValid();
         },
-        lastname() {
+        lastname(e) {
             this.checkFormValid();
         },
-        description() {
+        description(e) {
             this.checkFormValid();
         },
-        email() {
+        email(e) {
             this.checkFormValid();
         },
     }
