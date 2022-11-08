@@ -41,13 +41,13 @@
                 <v-btn variant="flat" color="info" :disabled="!valid" @click="this.submit()">Save</v-btn>
             </v-card-actions>
         </v-card>
-        <v-dialog v-model="overlay">
+        <v-dialog v-model="overlay" max-width="600">
             <v-row class="fill-height" align-content="center" justify="center" v-if="status == 'submitting'">
                 <v-col class="text-subtitle-1 text-center text-white" cols="12">
                     Uploading Form
                 </v-col>
                 <v-col class="text-center" cols="3">
-                    <v-progress-linear color="info" indeterminate rounded height="6">
+                    <v-progress-linear color="info" indeterminate>
                     </v-progress-linear>
                 </v-col>
             </v-row>
